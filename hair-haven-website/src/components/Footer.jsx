@@ -54,13 +54,13 @@ const Footer = () => {
           >
             <h4 className="text-xl font-semibold mb-4">Connect With Us</h4>
             <div className="flex space-x-4">
-              <a href="#" className="text-2xl hover:text-pink-300 transition duration-300">
+              <a href="https://www.facebook.com" className="text-2xl hover:text-pink-300 transition duration-300">
                 <i className="fab fa-facebook"></i>
               </a>
-              <a href="#" className="text-2xl hover:text-pink-300 transition duration-300">
+              <a href="https://www.instagram.com/ak_sherwal110/" className="text-2xl hover:text-pink-300 transition duration-300">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" className="text-2xl hover:text-pink-300 transition duration-300">
+              <a href="https://x.com/Aksherwal110" className="text-2xl hover:text-pink-300 transition duration-300">
                 <i className="fab fa-twitter"></i>
               </a>
             </div>
