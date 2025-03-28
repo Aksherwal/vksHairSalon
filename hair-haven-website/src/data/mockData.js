@@ -9,12 +9,16 @@
 //     { id: 1, name: "20% off Haircut", service: "Haircut", validTill: "6 PM" },
 //     { id: 2, name: "10% off Beard Trim", service: "Beard Trim", validTill: "4 PM" },
 //   ];
-  
+
+import haircolor from "../context/haircolor.jpg"
+import style2 from "../context/styling2.jpg"
+import beard from "../context/styling.jpg"
+import styling from "../context/beared.jpg"
 export const services = [
-  { id: 1, name: "Haircut", price: 30, discount: 20, available: true, image: "https://example.com/haircut.jpg" },
-  { id: 2, name: "Hair Coloring", price: 80, discount: null, available: true, image: "https://example.com/coloring.jpg" },
-  { id: 3, name: "Styling", price: 50, discount: null, available: true, image: "https://example.com/styling.jpg" },
-  { id: 4, name: "Beard Trim", price: 20, discount: 10, available: true, image: "https://example.com/beard.jpg" },
+  { id: 1, name: "Haircut", price: 30, discount: 20, available: true, image: style2 },
+  { id: 2, name: "Beard Trim", price: 20, discount: 10, available: true, image: beard},
+  { id: 3, name: "Hair Coloring", price: 80, discount: null, available: true, image: haircolor },
+  { id: 4, name: "Styling", price: 50, discount: null, available: true, image: styling },
 ];
 
 export const offers = [
