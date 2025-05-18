@@ -1,112 +1,166 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useShop } from '../context/ShopContext';
 import { Star } from 'lucide-react';
+import { useShop } from '../context/ShopContext';
 
 const ReviewsPage = () => {
   const { reviews, setReviews } = useShop();
   const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setReviews([...reviews, { ...newReview, id: reviews.length + 1 }]);
+    
+    if (!newReview.name.trim() || !newReview.comment.trim()) {
+      setFormError('Please fill in all fields');
+      return;
+    }
+    
+    setReviews([...reviews, { 
+      ...newReview, 
+      id: reviews.length + 1,
+      date: new Date().toLocaleDateString()
+    }]);
+    
     setNewReview({ name: '', rating: 5, comment: '' });
+    setFormError('');
   };
 
-  const StarRating = ({ rating }) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    return (
-      <div className="flex">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star key={i} className="text-yellow-400 fill-current" />
-        ))}
-        {hasHalfStar && <Star className="text-yellow-400 fill-current" style={{ clipPath: 'inset(0 50% 0 0)' }} />}
-      </div>
-    );
+  const handleRatingChange = (rating) => {
+    setNewReview({ ...newReview, rating });
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.h1
+    <div className="container mx-auto px-4 py-12">
+      <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+        className="text-center mb-12"
       >
-        Customer Reviews
-      </motion.h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {reviews.map((review) => (
-          <motion.div
-            key={review.id}
-            className="bg-white p-6 rounded-lg shadow-lg"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">{review.name}</h3>
-              <StarRating rating={review.rating} />
+        <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-500">
+          Customer Reviews
+        </h1>
+        <p className="text-neutral-600 max-w-2xl mx-auto">
+          See what our customers have to say about their experience at Hair Haven.
+        </p>
+      </motion.div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="lg:col-span-2">
+          <h2 className="text-2xl font-semibold mb-6 text-neutral-800">Recent Reviews</h2>
+          
+          {reviews.length === 0 ? (
+            <div className="bg-neutral-50 rounded-xl p-8 text-center">
+              <p className="text-neutral-600">No reviews yet. Be the first to leave a review!</p>
             </div>
-            <p className="text-gray-600">{review.comment}</p>
-          </motion.div>
-        ))}
-      </div>
-      <div className="bg-gradient-to-r from-purple-100 to-pink-100 p-8 rounded-lg shadow-xl">
-        <h2 className="text-2xl font-bold mb-4">Leave a Review</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={newReview.name}
-              onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="rating" className="block text-sm font-medium text-gray-700">
-              Rating
-            </label>
-            <select
-              id="rating"
-              value={newReview.rating}
-              onChange={(e) => setNewReview({ ...newReview, rating: Number(e.target.value) })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
-            >
-              {[1, 2, 3, 4, 5].map((num) => (
-                <option key={num} value={num}>
-                  {num} Star{num !== 1 ? 's' : ''}
-                </option>
+          ) : (
+            <div className="space-y-6">
+              {reviews.map((review, index) => (
+                <motion.div
+                  key={review.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="bg-white rounded-xl shadow-soft p-6"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-neutral-800">{review.name}</h3>
+                      <p className="text-neutral-500 text-sm">{review.date || 'Recent'}</p>
+                    </div>
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          size={18}
+                          fill={i < review.rating ? "currentColor" : "none"}
+                          strokeWidth={i < review.rating ? 0 : 2}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-neutral-600">{review.comment}</p>
+                </motion.div>
               ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="comment" className="block text-sm font-medium text-gray-700">
-              Comment
-            </label>
-            <textarea
-              id="comment"
-              value={newReview.comment}
-              onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-              rows="4"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
-              required
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+            </div>
+          )}
+        </div>
+        
+        <div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="bg-white rounded-xl shadow-soft p-6"
           >
-            Submit Review
-          </button>
-        </form>
+            <h2 className="text-2xl font-semibold mb-6 text-neutral-800">Leave a Review</h2>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={newReview.name}
+                  onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  placeholder="Enter your name"
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Rating
+                </label>
+                <div className="flex space-x-1">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <button
+                      key={rating}
+                      type="button"
+                      onClick={() => handleRatingChange(rating)}
+                      className="focus:outline-none"
+                    >
+                      <Star 
+                        size={24}
+                        className="text-yellow-400"
+                        fill={rating <= newReview.rating ? "currentColor" : "none"}
+                        strokeWidth={rating <= newReview.rating ? 0 : 2}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="comment" className="block text-sm font-medium text-neutral-700 mb-1">
+                  Your Review
+                </label>
+                <textarea
+                  id="comment"
+                  value={newReview.comment}
+                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  rows="4"
+                  placeholder="Share your experience with us"
+                ></textarea>
+              </div>
+              
+              {formError && (
+                <div className="mb-4 text-red-500 text-sm">{formError}</div>
+              )}
+              
+              <button
+                type="submit"
+                className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium"
+              >
+                Submit Review
+              </button>
+            </form>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -15,15 +15,31 @@ import style2 from "../context/styling2.jpg"
 import beard from "../context/styling.jpg"
 import styling from "../context/beared.jpg"
 export const services = [
-  { id: 1, name: "Haircut", price: 30, discount: 20, available: true, image: style2 },
-  { id: 2, name: "Beard Trim", price: 20, discount: 10, available: true, image: beard},
-  { id: 3, name: "Hair Coloring", price: 80, discount: null, available: true, image: haircolor },
-  { id: 4, name: "Styling", price: 50, discount: null, available: true, image: styling },
+  { id: 1, name: "Haircut", price: 30, duration: 30, discount: 20, available: true, image: style2 },
+  { id: 2, name: "Beard Trim", price: 20, duration: 15, discount: 10, available: true, image: beard},
+  { id: 3, name: "Hair Coloring", price: 80, duration: 60, discount: null, available: true, image: haircolor },
+  { id: 4, name: "Styling", price: 50, duration: 30, discount: null, available: true, image: styling },
 ];
 
 export const offers = [
-  { id: 1, name: "20% off Haircut", service: "Haircut", validTill: "6 PM" },
-  { id: 2, name: "10% off Beard Trim", service: "Beard Trim", validTill: "4 PM" },
+  { 
+    id: 1, 
+    name: "20% off Haircut", 
+    service: "Haircut", 
+    discount: 20,
+    validTill: "6 PM", 
+    // If you want to use actual dates:
+    // validUntil: "2023-12-31T18:00:00"
+  },
+  { 
+    id: 2, 
+    name: "10% off Beard Trim", 
+    service: "Beard Trim", 
+    discount: 10,
+    validTill: "4 PM",
+    // If you want to use actual dates:
+    // validUntil: "2023-12-31T16:00:00" 
+  },
 ];
 
 export const reviews = [

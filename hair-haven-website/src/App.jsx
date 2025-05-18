@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FloatingActionButton from './components/FloatingActionButton';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import OffersPage from './pages/OffersPage';
@@ -20,7 +21,7 @@ const App = () => {
           <Header />
           <AnimatePresence mode="wait">
             <motion.main
-              className="flex-grow"
+              className="flex-grow pt-16" // Added padding-top to account for fixed header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -38,6 +39,7 @@ const App = () => {
             </motion.main>
           </AnimatePresence>
           <Footer />
+          <FloatingActionButton />
         </div>
       </Router>
     </ShopProvider>

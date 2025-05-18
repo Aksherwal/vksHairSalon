@@ -11,62 +11,115 @@ const ServicesPage = () => {
     : services;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.h1
+    <div className="container mx-auto px-4 py-12">
+      <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+        className="text-center mb-12"
       >
-        Our Services
-      </motion.h1>
+        <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-500">
+          Our Services
+        </h1>
+        <p className="text-neutral-600 max-w-2xl mx-auto">
+          Discover our range of professional hair care services designed to make you look and feel your best.
+        </p>
+      </motion.div>
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-4"
+        className="mb-8 flex justify-between items-center"
       >
-        <label className="inline-flex items-center">
-          <input
-            type="checkbox"
-            className="form-checkbox h-5 w-5 text-purple-600"
-            checked={showOnlyAvailable}
-            onChange={() => setShowOnlyAvailable(!showOnlyAvailable)}
-          />
-          <span className="ml-2 text-gray-700">Show only available services</span>
-        </label>
+        <div className="flex items-center">
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-primary-600 rounded border-neutral-300 focus:ring-primary-500"
+              checked={showOnlyAvailable}
+              onChange={() => setShowOnlyAvailable(!showOnlyAvailable)}
+            />
+            <span className="ml-2 text-neutral-700">Show only available services</span>
+          </label>
+        </div>
+        
+        <div className="text-neutral-500 text-sm">
+          Showing {filteredServices.length} of {services.length} services
+        </div>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        {filteredServices.map((service) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredServices.map((service, index) => (
           <motion.div
             key={service.id}
-            whileHover={{ scale: 1.05 }}
-            // className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-            className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl relative h-96"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 * index }}
+            whileHover={{ y: -5 }}
+            className="bg-white rounded-xl shadow-card overflow-hidden"
           >
-            <img src={service.image} alt={service.name} className="w-full h-full object-cover rounded-md mb-4" />
-            <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-80 backdrop-blur-md p-4">
-            <div className="flex items-center justify-between gap-4">
-            <h2 className="text-xl font-semibold flex-1 min-w-0 truncate">{service.name}</h2>
-            <p className="text-gray-600 ">₹{service.price}</p>
-            {service.discount && (
-              <p className="text-green-600 font-semibold ">{service.discount}% off</p>
-            )}
-            <p className={`font-semibold ${service.available ? 'text-green-600' : 'text-red-600'}`}>
-              {service.available ? 'Available' : 'Not Available'}
-            </p>
+            <div className="relative h-64">
+              <img 
+                src={service.image} 
+                alt={service.name} 
+                className="w-full h-full object-cover"
+              />
+              {!service.available && (
+                <div className="absolute top-4 right-4 bg-neutral-800 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  Currently Unavailable
+                </div>
+              )}
+              {service.discount && (
+                <div className="absolute top-4 left-4 bg-secondary-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  {service.discount}% OFF
+                </div>
+              )}
             </div>
+            
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-neutral-800 mb-2">{service.name}</h3>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  {service.discount ? (
+                    <div className="flex items-center">
+                      <span className="text-primary-600 font-bold text-xl">
+                        ₹{(service.price - (service.price * service.discount / 100)).toFixed(0)}
+                      </span>
+                      <span className="text-neutral-400 line-through ml-2">₹{service.price}</span>
+                    </div>
+                  ) : (
+                    <span className="text-primary-600 font-bold text-xl">₹{service.price}</span>
+                  )}
+                </div>
+                
+                <div>
+                  {service.available ? (
+                    <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                      Available
+                    </span>
+                  ) : (
+                    <span className="inline-block bg-neutral-100 text-neutral-600 text-xs px-2 py-1 rounded-full">
+                      Unavailable
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <button 
+                className={`w-full py-2 rounded-lg font-medium transition-colors ${
+                  service.available 
+                    ? 'bg-primary-600 text-white hover:bg-primary-700' 
+                    : 'bg-neutral-200 text-neutral-500 cursor-not-allowed'
+                }`}
+                disabled={!service.available}
+              >
+                {service.available ? 'Book Now' : 'Currently Unavailable'}
+              </button>
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 };
