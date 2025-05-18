@@ -11,6 +11,9 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ReviewsPage from './pages/ReviewsPage';
 import PhotoGallery from './components/PhotoGallery';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import CookiePolicyPage from './pages/CookiePolicyPage';
 import { ShopProvider } from './context/ShopContext';
 
 const App = () => {
@@ -35,6 +38,9 @@ const App = () => {
                 <Route path="/gallery" element={<PhotoGallery />} />
                 <Route path="/admin-login" element={<AdminLoginPage />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms" element={<TermsOfServicePage />} />
+                <Route path="/cookies" element={<CookiePolicyPage />} />
               </Routes>
             </motion.main>
           </AnimatePresence>
