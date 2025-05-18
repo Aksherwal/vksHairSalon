@@ -192,9 +192,9 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors duration-300">Cookie Policy</a>
+            <Link to="/privacy" className="hover:text-white transition-colors duration-300">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors duration-300">Terms of Service</Link>
+            <Link to="/cookies" className="hover:text-white transition-colors duration-300">Cookie Policy</Link>
           </motion.div>
           
           <motion.div
